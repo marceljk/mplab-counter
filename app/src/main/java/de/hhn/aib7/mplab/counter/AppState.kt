@@ -19,6 +19,7 @@ val appReducer: Reducer<AppState> = { state, action ->
     }
 }
 
+// TEST
 //val store = createStore(appReducer, AppState())
 
 
