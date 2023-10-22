@@ -1,5 +1,6 @@
 package de.hhn.aib7.mplab.counter
 
+import AppState
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,7 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import appReducer
 import de.hhn.aib7.mplab.counter.ui.theme.CounterTheme
+import org.reduxkotlin.createStore
+
+val store = createStore(appReducer, AppState())
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
