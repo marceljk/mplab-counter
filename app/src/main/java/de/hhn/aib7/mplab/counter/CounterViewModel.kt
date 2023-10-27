@@ -1,20 +1,20 @@
 package de.hhn.aib7.mplab.counter
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class CounterViewModel : ViewModel() {
+class CounterViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
-    private val _counter = MutableStateFlow(0)
-    val counter : StateFlow<Int> = _counter.asStateFlow()
+    val counter: StateFlow<Int> = savedStateHandle.getStateFlow("counter", 0)
 
     fun increment() {
-        _counter.value += 1
+        savedStateHandle["counter"] = counter.value + 1;
     }
 
     fun decrement() {
-        _counter.value -= 1
+        savedStateHandle["counter"] = counter.value - 1;
     }
 }

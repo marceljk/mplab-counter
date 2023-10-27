@@ -1,8 +1,10 @@
 package de.hhn.aib7.mplab.counter
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,10 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModelProvider
 import de.hhn.aib7.mplab.counter.ui.theme.CounterTheme
 
 class MainActivity : ComponentActivity() {
-    private val counterViewModel = CounterViewModel() // Init CounterViewModel
+    private val counterViewModel: CounterViewModel by viewModels() // Init CounterViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
