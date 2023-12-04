@@ -24,10 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import de.hhn.aib7.mplab.counter.ui.theme.CounterTheme
 
 class MainActivity : ComponentActivity() {
-    private val counterViewModel: CounterViewModel by viewModels() // Init CounterViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -37,27 +37,72 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val counter by counterViewModel.counter.collectAsState() // Access counter value from ViewModel
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceAround
-                    ) {
-                        Text(text = counter.toString(), style = MaterialTheme.typography.displayLarge )
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
-                            Button(
-                                onClick = { counterViewModel.decrement() }, // Execute decrement function of ViewModel
-                                modifier = Modifier.width(150.dp),
-                                content = { Text(text = "-", style = MaterialTheme.typography.displayMedium)}
-                            )
-                            Button(
-                                onClick = { counterViewModel.increment() }, // Execute increment function of ViewModel
-                                modifier = Modifier.width(150.dp),
-                                content = { Text(text = "+", style = MaterialTheme.typography.displayMedium)})
-                        }
-                    }
+                    CounterView()
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun CounterView(counterViewModel: CounterViewModel = viewModel(), savedStateViewModel: CounterSavedViewModel = viewModel()) {
+    val counter by counterViewModel.counter.collectAsState() // Access counter value from ViewModel
+    val savedCounter by savedStateViewModel.counter.collectAsState() // Access counter value from ViewModel
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceAround
+    ) {
+        Text(
+            text = "Counter",
+            style = MaterialTheme.typography.displayLarge,
+        )
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround
+        ) {
+            Text(
+                text = "ViewModel:",
+                style = MaterialTheme.typography.displaySmall
+            )
+            Text(
+                text = counter.toString(),
+                style = MaterialTheme.typography.displaySmall
+            )
+        }
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround
+        ) {
+            Text(
+                text = "VM + SavedState:",
+                style = MaterialTheme.typography.displaySmall
+            )
+            Text(
+                text = savedCounter.toString(),
+                style = MaterialTheme.typography.displaySmall
+            )
+        }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+            Button(
+                // Execute decrement function of ViewModel
+                onClick = {
+                    counterViewModel.decrement()
+                    savedStateViewModel.decrement()
+                },
+                modifier = Modifier.width(150.dp),
+                content = { Text(text = "-", style = MaterialTheme.typography.displayMedium)}
+            )
+            Button(
+                // Execute increment function of ViewModel
+                onClick = {
+                    counterViewModel.increment()
+                    savedStateViewModel.increment()
+                },
+                modifier = Modifier.width(150.dp),
+                content = { Text(text = "+", style = MaterialTheme.typography.displayMedium)})
         }
     }
 }
@@ -66,5 +111,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     CounterTheme {
+        CounterView()
     }
 }
